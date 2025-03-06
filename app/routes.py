@@ -1,15 +1,19 @@
 from app import app
-from flask import request, jsonify, Response
+from flask import request, jsonify, Response, render_template
 
 # Static route
 @app.route("/")
 def home():
-    return "Hello, Flask!"
+    return render_template("home.html")
 
 # Dynamic route
 @app.route("/user/<name>")
 def show_user(name):
-    return f"Hello, {name}"
+    ## Flask accepts any DS to be passed to the template
+    ## This can be a simple list, dict etc
+    students = ["Paul Murithi", "Ashley Koech", "Mily Cyrus", "Joel Kaizer"]
+    print(students)
+    return render_template("home.html", data=students)
 
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
