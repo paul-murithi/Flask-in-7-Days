@@ -1,5 +1,9 @@
 from app import app
 from flask import request, jsonify, Response, render_template
+# Flask WTF is used to manage forms
+from flask_wtf import FlaskForm 
+from wtforms import StringField, SubmitField , EmailField
+from wtforms.validators import DataRequired, Email # This ensures the field is not left empty.
 
 # Static route
 @app.route("/")
@@ -53,3 +57,24 @@ def handle_json():
     
     # jsonify serializes the dict into a JSON format
     return jsonify({"message": f"Hello. {name}! You are {age} years old"})
+
+# Flask Forms
+"""
+Flask doesn’t have built-in form handling, so we use Flask-WTF (a wrapper around WTForms) to manage forms.
+"""
+
+# Base class for WTF. Defined class will inherit from this class
+class MyForm(FlaskForm):
+    # StringField: Represents a text input field. It takes the field label (e.g., 'Name') and a list of validators (e.g., DataRequired()).
+    name = StringField('Enter your name', validators=[DataRequired("Name is required")])
+    email = EmailField("Enter your Email", validators=[DataRequired(), Email()])
+    # SubmitField: Represents a submit button on the form.
+    submit = SubmitField("Submit")
+    
+@app.route("/sign-up")
+def handle_sign_up():
+    form = MyForm()
+    if form.validate_on_submit(): # Check if form is submitted and valid
+        name = form.name.data # GEt form data
+        return f"Thankyou for signing up {name}"
+    return render_template("auth.html", form = form) # Render the template
