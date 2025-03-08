@@ -1,5 +1,5 @@
 from app import app
-from flask import request, jsonify, Response, render_template
+from flask import request, jsonify, Response, render_template, url_for, flash,session, redirect
 # Flask WTF is used to manage forms
 from flask_wtf import FlaskForm 
 from wtforms import StringField, SubmitField , EmailField
@@ -78,3 +78,11 @@ def handle_sign_up():
         name = form.name.data # GEt form data
         return f"Thankyou for signing up {name}"
     return render_template("auth.html", form = form) # Render the template
+
+## Flash Messages in Flask
+# Flash messages are used to display temporary notifications like success, errors, or warnings.
+# They disappear after one request-response cycle (after reloading or navigating).
+@app.route("/submit", methods=["POST"])
+def submit():
+    flash("Form Submitted succesfully", "success")
+    return redirect(url_for("sign-up"))

@@ -7,6 +7,12 @@
   </head>
   <body>
     <h1>Welcome to the WTForms Example!</h1>
+    {% with messages = get_flashed_messages(with_categories=True) %} {% if
+    messages %} {% for category, message in messages %}
+    <p class="{{ category }}">{{ message }}</p>
+    <!-- Category allows styling -->
+    {% endfor %} {% endif %} {% endwith %}
+
     <form method="POST">
       {{ form.hidden_tag() }}
       <!-- For CSRF token -->
