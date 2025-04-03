@@ -15,3 +15,4 @@ __pycache__/
 
 # Ignore the virtual environment directory
 venv/.config.py.swp
+venv/
